@@ -1,3 +1,3 @@
 # TxPersianDate
-Persian Date library
+Persian Date library\n
 original https://github.com/samanzamani/PersianDate
