@@ -1,3 +1,3 @@
 # TxPersianDate
-Persian Date library\n
-original https://github.com/samanzamani/PersianDate
+Persian Date library
+Original Project https://github.com/samanzamani/PersianDate
