@@ -1,7 +1,5 @@
 package com.sabih.persiandate;
 
-import android.util.Log;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -41,8 +39,8 @@ public class PersianDate {
      */
     public PersianDate(int year, int month, int day) {
         this.year = year;
-        this.month = month;
-        this.day = day;
+        this.month = validateMonth(month);
+        this.day = validateDay(day);
         this.hour = 0;
         this.minute = 0;
         this.second = 0;
@@ -55,8 +53,8 @@ public class PersianDate {
      */
     public PersianDate(int year, int month, int day, int hour, int minute, int second) {
         this.year = year;
-        this.month = month;
-        this.day = day;
+        this.month = validateMonth(month);
+        this.day = validateDay(day);
         this.hour = hour;
         this.minute = minute;
         this.second = second;
@@ -106,6 +104,7 @@ public class PersianDate {
 
     public PersianDate setYear(int year) {
         this.year = year;
+        this.day = validateDay(day);
         prepareDate();
         return this;
     }
@@ -115,7 +114,8 @@ public class PersianDate {
     }
 
     public PersianDate setMonth(int month) {
-        this.month = month;
+        this.month = validateMonth(month);
+        this.day = validateDay(this.day);
         prepareDate();
         return this;
     }
@@ -125,7 +125,7 @@ public class PersianDate {
     }
 
     public PersianDate setDay(int day) {
-        this.day = day;
+        this.day = validateDay(day);
         this.prepareDate();
         return this;
     }
@@ -186,8 +186,8 @@ public class PersianDate {
     public PersianDate initDateByGrg(int grgYear, int grgMonth, int grgDay, int hour, int minute, int second) {
         int[] convert = this.toJalali(grgYear, grgMonth, grgDay);
         this.year = convert[0];
-        this.month = convert[1];
-        this.day = convert[2];
+        this.month = validateMonth(convert[1]);
+        this.day = validateDay(convert[2]);
         this.hour = hour;
         this.minute = minute;
         this.second = second;
@@ -220,8 +220,8 @@ public class PersianDate {
      */
     public PersianDate initDateByJalali(int shYear, int shMonth, int shDay, int hour, int minute, int second) {
         this.year = shYear;
-        this.month = shMonth;
-        this.day = shDay;
+        this.month = validateMonth(shMonth);
+        this.day = validateDay(shDay);
         this.hour = hour;
         this.minute = minute;
         this.second = second;
@@ -240,8 +240,8 @@ public class PersianDate {
         calendar.setTimeInMillis(timeInMilliSecond);
         int[] convert = this.toJalali(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
         this.year = convert[0];
-        this.month = convert[1];
-        this.day = convert[2];
+        this.month = validateMonth(convert[1]);
+        this.day = validateDay(convert[2]);
         this.hour = calendar.get(Calendar.HOUR_OF_DAY);
         this.minute = calendar.get(Calendar.MINUTE);
         this.second = calendar.get(Calendar.SECOND);
@@ -967,5 +967,19 @@ public class PersianDate {
      */
     private long removeMilliSecond(long date) {
         return (date - (date % 1000));
+    }
+
+    private int validateMonth(int month) {
+        if (month > 12) {
+            return 12;
+        } else return Math.max(month, 1);
+    }
+
+    private int validateDay(int day) {
+        if (day > getMonthLength()) {
+            return getMonthLength();
+        } else {
+            return Math.max(day, 1);
+        }
     }
 }
