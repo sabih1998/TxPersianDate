@@ -1,0 +1,3 @@
+include ':PersianDate'
+include ':app'
+rootProject.name = "TXPersianDate"
